@@ -6,7 +6,7 @@ bloczków lub z kolejnych złożonych bloczków. Założyłem, że bloczek zło�
 CompositeBlock dziedziczy po Block. Ponieważ w bloczku złożonym mogą być pojedyńcze bloczki o różnych kolorach. 
 Dlatego aby zwrócić bloczek o danym klorze robijam bloczki złozone na pojedyńcze. Tak samo z materiałem. 
 
-Zaimplementowałem funkcje: count, która zwraca liczbę wszsytkich pojedyńczych bloczków, w przypadku gdy bloczek okaże 
+Zaimplementowałem funkcje count, która zwraca liczbę wszsytkich pojedyńczych bloczków, w przypadku gdy bloczek okaże 
 się bloczkiem złożonym to zostanie wywołana funkcja count z parametrem, która rekurencjynie rozbjia zbiór bloczków 
 aż do pojedyńczego bloku i je zlicza. Funkcja findBlocksByMaterial zwraca wszsytkie bloczki, które są zrobione z danego 
 materiału. W przypadku, gdy bloczek okaże się bloczkiem złożonym to taki bloczek zostaje rozbity rekurencyjnie przy 
