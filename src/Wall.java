@@ -9,7 +9,7 @@ public class Wall implements Structure {
     public Optional<Block> findBlockByColor(String color) {
         for(Block block : blocks) {
             if (block instanceof CompositeBlock) {
-                Optional<Block> colorBlock = findComposeBlockByColor(color, (CompositeBlock) block);
+                Optional<Block> colorBlock = findBlockByColor(color, (CompositeBlock) block);
                 if(colorBlock.isPresent()){
                     return colorBlock;
                 }
@@ -17,10 +17,11 @@ public class Wall implements Structure {
         }
         return Optional.empty();
     }
-    private Optional<Block> findComposeBlockByColor(String color,  CompositeBlock compositeBlock) {
-        for(Block block : blocks) {
+
+    private Optional<Block> findBlockByColor(String color,  CompositeBlock compositeBlock) {
+        for(Block block : compositeBlock.getBlocks()) {
             if (block instanceof CompositeBlock) {
-                Optional<Block> colorBlock = findComposeBlockByColor(color, (CompositeBlock) block);
+                Optional<Block> colorBlock = findBlockByColor(color, (CompositeBlock) block);
                 if(colorBlock.isPresent()){
                     return colorBlock;
                 }
@@ -34,39 +35,38 @@ public class Wall implements Structure {
         List<Block> materialBlocks = new ArrayList<>();
         for(Block block : blocks) {
             if (block instanceof CompositeBlock) {
-                materialBlocks.addAll(findComposeBlocksByMaterial(material, (CompositeBlock) block));
+                materialBlocks.addAll(findBlocksByMaterial(material, (CompositeBlock) block));
             } else if (block.getMaterial().equals(material)) materialBlocks.add(block);
         }
         return materialBlocks;
     }
 
-    public List<Block> findComposeBlocksByMaterial(String material, CompositeBlock compositeBlock) {
+    public List<Block> findBlocksByMaterial(String material, CompositeBlock compositeBlock) {
         List<Block> materialBlocks = new ArrayList<>();
-        for(Block block : blocks){
+        for(Block block : compositeBlock.getBlocks()){
             if ( block instanceof CompositeBlock ){
-                materialBlocks.addAll(findComposeBlocksByMaterial(material, (CompositeBlock) block));
-            }else materialBlocks.add(block);
+                materialBlocks.addAll(findBlocksByMaterial(material, (CompositeBlock) block));
+            }else if (block.getMaterial().equals(material)) materialBlocks.add(block);
         }
         return materialBlocks;
     }
-
 
     @Override
     public int count() {
         int counter = 0;
         for(Block block : blocks){
             if ( block instanceof CompositeBlock ){
-                counter+= countCompositeBlock( (CompositeBlock) block );
+                counter+= count( (CompositeBlock) block );
             }else counter ++;
         }
         return counter;
     }
 
-    private int countCompositeBlock(CompositeBlock compositeBlock) {
+    private int count(CompositeBlock compositeBlock) {
         int counter = 0;
         for(Block block : compositeBlock.getBlocks()){
             if ( block instanceof CompositeBlock ){
-                counter+= countCompositeBlock( (CompositeBlock) block );
+                counter+= count( (CompositeBlock) block );
             }else counter ++;
         }
         return counter;
